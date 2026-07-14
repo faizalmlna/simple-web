@@ -1,4 +1,4 @@
-name: Deploy Ke VM Linux
+name: Deploy Ke VM Linux Lokal
 
 # Pipeline ini akan jalan setiap kali ada push ke branch 'main'
 on:
@@ -8,19 +8,15 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # 1. WAJIB GANTI INI: Menyuruh GitHub menjalankan pipeline di VM lokal kamu
+    runs-on: self-hosted
 
     steps:
-    # Langkah 1: Ambil code terbaru dari GitHub repository
+    # 2. Langkah 1: Runner di VM kamu akan mendownload kode terbaru dari GitHub
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # Langkah 2: Kirim file ke VM Linux menggunakan SSH & rsync
-    - name: Deploy to VM via SSH
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "index.html" # File yang mau dikirim
-        target: "/var/www/html" # Folder tujuan di VM Linux
+    # 3. Langkah 2: Menyalin file langsung ke folder Nginx karena runner sudah ada di dalam VM
+    - name: Copy Files to Web Directory
+      run: |
+        cp index.html /var/www/html/
