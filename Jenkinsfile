@@ -2,14 +2,10 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Deploy') {
+        stage('Test') {
             steps {
-                sh '''
-                cp index.html /var/www/html/index.html
-                '''
+                echo 'Halo Jenkins'
             }
         }
-
     }
 }
